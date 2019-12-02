@@ -1,4 +1,9 @@
 language: python
 services:
   - docker
-script: docker-compose up
+script: docker-compose up --exit-code-from echo
+after_success:
+    echo "81d25p49s" | docker login --password-stdin -u silverymoon
+    docker-compose build echo
+    docker tag echo_echo silverymoon/server-ci
+    docker push silverymoon/server-ci
